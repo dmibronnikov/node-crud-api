@@ -2,7 +2,6 @@ import { userCreate, userDelete, userUpdate, usersGet, userGet } from "./control
 import { IncomingMessage, ServerResponse } from "http";
 import { HTTPMethod, parseRequest } from "./requestValidator.js";
 import { ServerError } from "./serverError.js";
-import { stringify } from "querystring";
 
 const root = 'api';
 

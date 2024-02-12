@@ -1,7 +1,7 @@
 import { User } from "./user.js";
 import { FileHandle, open } from 'fs/promises';
 import { fileURLToPath } from "url";
-import { dirname, join, parse } from 'path';
+import { dirname, join } from 'path';
 
 const pathToDB = join(dirname(fileURLToPath(import.meta.url)), '../..', 'db.txt');
 

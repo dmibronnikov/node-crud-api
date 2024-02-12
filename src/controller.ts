@@ -1,8 +1,5 @@
 import { User } from "./user.js";
-import { IncomingMessage, ServerResponse } from "http";
 import { deleteUser, getUsers, saveUser } from './db.js';
-import { Request } from "./requestValidator.js";
-import { randomUUID } from "crypto";
 import { ServerError } from "./serverError.js";
 
 type UserBody = {

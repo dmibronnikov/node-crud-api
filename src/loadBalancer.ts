@@ -1,4 +1,3 @@
-// npx loadtest -n 1200 -c 400 -k http://localhost:3000/{route}
 import 'dotenv/config';
 import cluster from 'cluster';
 import { availableParallelism } from 'os';
