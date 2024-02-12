@@ -1,7 +1,8 @@
-import { userCreate, userDelete, userUpdate, usersGet } from "./controller.js";
+import { userCreate, userDelete, userUpdate, usersGet, userGet } from "./controller.js";
 import { IncomingMessage, ServerResponse } from "http";
 import { HTTPMethod, parseRequest } from "./requestValidator.js";
 import { ServerError } from "./serverError.js";
+import { stringify } from "querystring";
 
 const root = 'api';
 
@@ -12,9 +13,16 @@ export const route = async (req: IncomingMessage, res: ServerResponse) => {
         let request = await parseRequest(req);
         switch (request.method) {
             case HTTPMethod.GET:
-                let users = await usersGet();
-                res.statusCode = 200;
-                res.end(JSON.stringify(users));
+                if (request.parameters.length > 0 && (typeof request.parameters[0] === 'string')) {
+                    let userID: string = request.parameters[0];
+                    let user = await userGet(userID);
+                    res.statusCode = 200;
+                    res.end(JSON.stringify(user));
+                } else {
+                    let users = await usersGet();
+                    res.statusCode = 200;
+                    res.end(JSON.stringify(users));
+                }
                 break;
             case HTTPMethod.POST:
                 let user = await userCreate(request);

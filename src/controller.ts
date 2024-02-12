@@ -15,28 +15,16 @@ export const usersGet = async (): Promise<User[]> => {
     return await getUsers();
 }
 
-export const userGet = async (request: Request): Promise<User[] | User> =>  {
-    if (request.parameters.length > 0) {
-        let userID = request.parameters[0];
-        if (userID !== undefined && isValidUUID(userID)) {
-            let users = (await getUsers()).filter(user => {
-                user.id === userID;
-            });
+export const userGet = async (userID: string): Promise<User> =>  {
+    if (!isValidUUID(userID)) {
+        throw new ServerError(400, `invalid userID ${userID}`);
+    }
 
-            if (users.length > 0) {
-                if (users.length == 1) {
-                    return users[0];
-                } else {
-                    return users;
-                }
-            } else {
-                throw new ServerError(404, `No user is found for ${userID}`);
-            }
-        } else {
-            throw new ServerError(400, `invalid user id ${userID}`);
-        }
+    let users = (await getUsers()).filter(user => { return user.id === userID });
+    if (users.length > 0) {
+        return users[0];
     } else {
-        return await getUsers();
+        throw new ServerError(404, `No user is found for ${userID}`);
     }
 }
 

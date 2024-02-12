@@ -1,0 +1,1 @@
+[{"id":"4b0e7167-3751-43c6-890f-ee6d085acc75","name":"Max","age":"27","hobbies":["guitar","games"]},{"id":"d875074c-b826-4939-97c2-ff7d6abc9c04","name":"Mihail","age":"32","hobbies":[]},{"id":"95025d60-5beb-443c-aee9-90f7c5d0b5b4","name":"Dima","age":"22","hobbies":["q","w"]}]
