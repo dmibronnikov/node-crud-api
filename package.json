@@ -1,0 +1,27 @@
+{
+  "name": "crud-api",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/src/server.js",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11.0"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start:dev": "nodemon",
+    "start:prod": "tsc && node ./build/server.js",
+    "start:multi": "tsc && node ./build/loadBalancer.js"
+  },
+  "keywords": [],
+  "author": "Dmitrii Bronnikov",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "nodemon": "^3.0.3",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.3"
+  }
+}
