@@ -5,7 +5,7 @@ import { availableParallelism } from 'os';
 let ports = new Map<number, number>();
 
 cluster.schedulingPolicy = cluster.SCHED_RR;
-cluster.setupPrimary({ exec: 'build/src/server.js' });
+cluster.setupPrimary({ exec: 'build/server.js' });
 
 for (let i = 0; i < availableParallelism() - 1; i++) {
     let port = 4001 + i;
