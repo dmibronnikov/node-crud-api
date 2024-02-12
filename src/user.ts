@@ -1,7 +1,7 @@
 import { UUID, randomUUID } from "crypto"
 
 export class User {
-    id: UUID;
+    id: string;
     name: string;
     age: number;
     hobbies: string[];

@@ -12,25 +12,31 @@ export const route = async (req: IncomingMessage, res: ServerResponse) => {
         let request = await parseRequest(req);
         switch (request.method) {
             case HTTPMethod.GET:
-                let users = await usersGet(request);
+                let users = await usersGet();
                 res.statusCode = 200;
                 res.end(JSON.stringify(users));
+                break;
             case HTTPMethod.POST:
-                await userCreate(request, res);
+                let user = await userCreate(request);
                 res.statusCode = 201;
-                res.end();
+                res.end(JSON.stringify(user));
+                break;
             case HTTPMethod.PUT:
                 await userUpdate(request, res);
+                break;
             case HTTPMethod.DELETE:
                 await userDelete(request, res);
+                break;
         }
     } catch (error) {
+        console.log(error);
+
         if (error instanceof ServerError) {
             res.statusCode = error.code;
-            res.end(error.message);
+            res.end(`{ "error": "${error.message}" }`);
         } else {
             res.statusCode = 500;
-            res.end('Something went wrong.');
+            res.end('{ "error": "Something went wrong." }');
         }
     }
 }

@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsc",
     "start:dev": "nodemon",
-    "start:prod": "tsc && port=3000 node ./build/src/server.js",
+    "start:prod": "tsc && port=4000 node ./build/src/server.js",
     "start:multi":"tsc && node ./build/src/loadBalancer.js",
     "test": "jest",
     "test:coverage": "jest --coverage"

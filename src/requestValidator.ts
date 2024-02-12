@@ -15,10 +15,10 @@ export enum HTTPMethod {
 export class Request {
     route: Route;
     method: HTTPMethod;
-    parameters: string[] | null;
+    parameters: string[];
     body: string | null
 
-    constructor(route: Route, method: HTTPMethod, parameters: string[] | null = null, body: string | null = null) {
+    constructor(route: Route, method: HTTPMethod, parameters: string[] = [], body: string | null = null) {
         this.route = route;
         this.method = method;
         this.parameters = parameters;
