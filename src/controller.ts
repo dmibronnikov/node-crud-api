@@ -1,6 +1,6 @@
 import { User } from "./user.js";
 import { IncomingMessage, ServerResponse } from "http";
-import { getUsers, saveUser } from './db.js';
+import { deleteUser, getUsers, saveUser } from './db.js';
 import { Request } from "./requestValidator.js";
 import { randomUUID } from "crypto";
 import { ServerError } from "./serverError.js";
@@ -28,9 +28,9 @@ export const userGet = async (userID: string): Promise<User> =>  {
     }
 }
 
-export const userCreate = async (request: Request): Promise<User> => {
-    if (request.body != null) {
-        let userBody: UserBody = JSON.parse(request.body);
+export const userCreate = async (body: string | null): Promise<User> => {
+    if (body != null) {
+        let userBody: UserBody = JSON.parse(body);
         if (userBody.name === undefined) { throw new ServerError(400, 'name is required'); }
         if (userBody.age === undefined) { throw new ServerError(400, 'age is required'); }
         if (userBody.hobbies === undefined) { throw new ServerError(400, 'hobbies are required'); }
@@ -44,19 +44,38 @@ export const userCreate = async (request: Request): Promise<User> => {
     }
 }
 
-export const userUpdate = async (request: Request, res: ServerResponse) => {
-    
+export const userUpdate = async (userID: string, body: string | null) => {
+    if (!isValidUUID(userID)) {
+        throw new ServerError(400, `invalid userID ${userID}`);
+    }
+
+    if (body != null) {
+        let userBody: UserBody = JSON.parse(body);
+        if (userBody.name === undefined) { throw new ServerError(400, 'name is required'); }
+        if (userBody.age === undefined) { throw new ServerError(400, 'age is required'); }
+        if (userBody.hobbies === undefined) { throw new ServerError(400, 'hobbies are required'); }
+
+        let user = new User(userBody.name, userBody.age, userBody.hobbies, userID);
+        await saveUser(user);
+
+        return user;
+    } else {
+        throw new ServerError(400, `invalid body`);
+    }
 }
 
-export const userDelete = async (request: Request, res: ServerResponse) => {
+export const userDelete = async (userID: string) => {
+    if (!isValidUUID(userID)) {
+        throw new ServerError(400, `invalid userID ${userID}`);
+    }
 
+    let result = await deleteUser(userID);
+    if (!result) {
+        throw new ServerError(404, `user with userID ${userID} not found`);
+    }
 }
 
 const isValidUUID = (str: string) => {
     const regexExp = /^[0-9a-fA-F]{8}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{4}\b-[0-9a-fA-F]{12}$/gi;
     return regexExp.test(str);
 }
-
-const validateGetUsersRequest = (request: Request) => {
-    
-};

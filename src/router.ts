@@ -13,9 +13,8 @@ export const route = async (req: IncomingMessage, res: ServerResponse) => {
         let request = await parseRequest(req);
         switch (request.method) {
             case HTTPMethod.GET:
-                if (request.parameters.length > 0 && (typeof request.parameters[0] === 'string')) {
-                    let userID: string = request.parameters[0];
-                    let user = await userGet(userID);
+                if (request.parameters.length > 0) {
+                    let user = await userGet(request.parameters[0]);
                     res.statusCode = 200;
                     res.end(JSON.stringify(user));
                 } else {
@@ -25,15 +24,19 @@ export const route = async (req: IncomingMessage, res: ServerResponse) => {
                 }
                 break;
             case HTTPMethod.POST:
-                let user = await userCreate(request);
+                let user = await userCreate(request.body);
                 res.statusCode = 201;
                 res.end(JSON.stringify(user));
                 break;
             case HTTPMethod.PUT:
-                await userUpdate(request, res);
+                let updatedUser = await userUpdate(request.parameters[0], request.body);
+                res.statusCode = 200;
+                res.end(JSON.stringify(updatedUser));
                 break;
             case HTTPMethod.DELETE:
-                await userDelete(request, res);
+                await userDelete(request.parameters[0]);
+                res.statusCode = 204;
+                res.end();
                 break;
         }
     } catch (error) {

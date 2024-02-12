@@ -5,14 +5,27 @@ import { dirname, join, parse } from 'path';
 
 const pathToDB = join(dirname(fileURLToPath(import.meta.url)), '../..', 'db.txt');
 
-export const saveUser = async (user: User) => {
+export const saveUser = async (newUser: User) => {
     let handle = await open(pathToDB, 'a+');
-    let users = await parseUsers(handle);
-    users.push(user);
+    let users = (await parseUsers(handle))
+    let filteredUsers = users.filter(user => { return user.id !== newUser.id });
+    filteredUsers.push(newUser);
 
     handle.truncate();
-    handle.write(JSON.stringify(users));
+    handle.write(JSON.stringify(filteredUsers));
     handle.close();
+}
+
+export const deleteUser = async (userID: string): Promise<boolean> => {
+    let handle = await open(pathToDB, 'a+');
+    let users = await parseUsers(handle);
+    let filteredUsers = users.filter(user => { return user.id !== userID });
+
+    handle.truncate();
+    handle.write(JSON.stringify(filteredUsers));
+    handle.close();
+
+    return filteredUsers.length !== users.length;
 }
 
 export const getUsers = async (): Promise<User[]> => {

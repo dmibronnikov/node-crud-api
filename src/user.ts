@@ -6,7 +6,7 @@ export class User {
     age: number;
     hobbies: string[];
 
-    constructor(name: string, age: number, hobbies: string[] = [], id: UUID = randomUUID()) {
+    constructor(name: string, age: number, hobbies: string[] = [], id: string = randomUUID()) {
         this.id = id;
         this.name = name;
         this.age = age;
