@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import http from 'http';
 import { route } from './router.js';
 
@@ -5,22 +6,22 @@ let hostname = 'localhost';
 
 let server = http.createServer(route);
 
-if (process.env.port !== undefined) {
+if (process.env.PORT !== undefined) {
     server.listen({
         host: hostname,
-        port: +process.env.port,
+        port: +process.env.PORT,
         exclusive: true
     }, () => {
-        console.log(`Server ${process.pid} is running on port ${process.env.port}`);
+        console.log(`Server ${process.pid} is running on port ${process.env.PORT}`);
     });
 }
 
-if (process.env.sharedPort !== undefined) {
+if (process.env.SHARED_PORT !== undefined) {
     server.listen({
         host: hostname,
-        port: +process.env.sharedPort,
+        port: +process.env.SHARED_PORT,
         exclusive: false,
     }, () => {
-        console.log(`Server ${process.pid} is sharing port ${process.env.sharedPort}`);
+        console.log(`Server ${process.pid} is sharing port ${process.env.SHARED_PORT}`);
     });
 }
